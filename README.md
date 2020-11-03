@@ -142,6 +142,7 @@ Option (* required)      | Description                                          
 **rollSession**          | Create a new session for every authn request instead of reusing an existing session                 | false
 **authnContextClassRef** | Authentication Context Class Reference                                                              | urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport
 **authnContextDecl**     | Authentication Context Declaration (XML FilePath)                                                   |
+**fqdn**                 | IdP Web Server FQDN                                                                                 | OS hostname(wildcard) or localhost
 
 
 # IdP SAML Settings

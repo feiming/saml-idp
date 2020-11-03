@@ -315,7 +315,11 @@ function processArgs(args, options) {
             return fs.readFileSync(filePath, 'utf8')
           }
         }
-      }
+      },
+      fqdn: {
+        description: 'IdP Web Server FQDN',
+        required: false,
+      },
     })
     .example('$0 --acsUrl http://acme.okta.com/auth/saml20/exampleidp --audience https://www.okta.com/saml2/service-provider/spf5aFRRXFGIMAYXQPNV', '')
     .check(function(argv, aliases) {
@@ -473,6 +477,7 @@ function _runServer(argv) {
 
   app.set('host', process.env.HOST || argv.host);
   app.set('port', process.env.PORT || argv.port);
+  app.set('fqdn', process.env.FQDN || argv.fqdn);
   app.set('views', path.join(__dirname, 'views'));
 
   /**
@@ -794,7 +799,7 @@ function _runServer(argv) {
   httpServer.listen(app.get('port'), app.get('host'), function() {
     const scheme          = argv.https ? 'https' : 'http',
           {address, port} = httpServer.address(),
-          hostname        = WILDCARD_ADDRESSES.includes(address) ? os.hostname() : 'localhost',
+          hostname        = app.get('fqdn') ? app.get('fqdn') : (WILDCARD_ADDRESSES.includes(address) ? os.hostname() : 'localhost'),
           baseUrl         = `${scheme}://${hostname}:${port}`;
 
     console.log(dedent(chalk`
